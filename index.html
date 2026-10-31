@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>С днём рождения, Егор! 🎉</title>
+
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    color: #fff;
+    background:
+      radial-gradient(circle at 10% 20%, rgba(255, 70, 110, .35), transparent 16%),
+      radial-gradient(circle at 92% 22%, rgba(70, 190, 255, .30), transparent 16%),
+      radial-gradient(circle at 10% 82%, rgba(255, 190, 70, .25), transparent 16%),
+      radial-gradient(circle at 90% 82%, rgba(210, 80, 255, .30), transparent 16%),
+      linear-gradient(135deg, #24205b, #4b2465, #291744);
+    background-attachment: fixed;
+  }
+
+  /* Декоративные светящиеся пятна */
+  .glow {
+    position: fixed;
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    filter: blur(18px);
+    opacity: .65;
+    pointer-events: none;
+  }
+
+  .glow-1 { left: 20px; top: 90px; background: #ff416c; }
+  .glow-2 { right: 20px; top: 100px; background: #38bdf8; }
+  .glow-3 { left: 45px; bottom: 55px; background: #ffd166; }
+  .glow-4 { right: 35px; bottom: 70px; background: #d946ef; }
+
+  /* Гирлянда */
+  .garland {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 65px;
+    pointer-events: none;
+    z-index: 4;
+  }
+
+  .garland-line {
+    position: absolute;
+    top: -18px;
+    left: -5%;
+    width: 110%;
+    height: 60px;
+    border-bottom: 2px solid rgba(255,255,255,.2);
+    border-radius: 0 0 50% 50%;
+  }
+
+  .bulbs {
+    position: absolute;
+    top: 27px;
+    left: 6%;
+    right: 6%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .bulb {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 12px currentColor;
+    animation: blink 1.5s ease-in-out infinite alternate;
+  }
+
+  .bulb:nth-child(1) { color:#ff5c8a; }
+  .bulb:nth-child(2) { color:#ffd166; animation-delay:.2s; }
+  .bulb:nth-child(3) { color:#4cc9f0; animation-delay:.4s; }
+  .bulb:nth-child(4) { color:#c77dff; animation-delay:.6s; }
+  .bulb:nth-child(5) { color:#06d6a0; animation-delay:.8s; }
+  .bulb:nth-child(6) { color:#ff5c8a; animation-delay:1s; }
+  .bulb:nth-child(7) { color:#ffd166; animation-delay:.3s; }
+  .bulb:nth-child(8) { color:#4cc9f0; animation-delay:.5s; }
+  .bulb:nth-child(9) { color:#c77dff; animation-delay:.7s; }
+  .bulb:nth-child(10) { color:#06d6a0; animation-delay:.9s; }
+
+  @keyframes blink {
+    from { transform:scale(.75); opacity:.45; }
+    to { transform:scale(1.15); opacity:1; }
+  }
+
+  /* Экран открытия */
+  .container {
+    position: relative;
+    z-index: 3;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 90px 20px 50px;
+  }
+
+  .open-screen {
+    text-align: center;
+    transition: .5s ease;
+  }
+
+  .gift {
+    width: 110px;
+    height: 110px;
+    margin: 0 auto 22px;
+    animation: giftPulse 1.7s ease-in-out infinite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cake-icon {
+    position: relative;
+    width: 82px;
+    height: 72px;
+    filter: drop-shadow(0 8px 18px rgba(255, 166, 210, .25));
+  }
+
+  .cake-body {
+    position: absolute;
+    left: 8px;
+    bottom: 3px;
+    width: 66px;
+    height: 38px;
+    border-radius: 8px 8px 15px 15px;
+    background: linear-gradient(180deg, #f7c7e6 0 25%, #e995c7 25% 100%);
+    box-shadow: inset 0 -7px 0 rgba(100, 30, 100, .12);
+  }
+
+  .cake-top {
+    position: absolute;
+    left: 4px;
+    bottom: 34px;
+    width: 74px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ffd7eb;
+    box-shadow: 0 4px 0 #e995c7;
+  }
+
+  .candle {
+    position: absolute;
+    bottom: 49px;
+    width: 8px;
+    height: 25px;
+    border-radius: 4px;
+    background: #ffd166;
+    z-index: 2;
+  }
+
+  .candle-1 { left: 22px; }
+  .candle-2 { left: 37px; background:#4cc9f0; }
+  .candle-3 { left: 52px; background:#c77dff; }
+
+  .flame {
+    position: absolute;
+    z-index: 3;
+    left: 38px;
+    bottom: 72px;
+    width: 9px;
+    height: 14px;
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);
+    background: #ffd166;
+    box-shadow: 0 0 14px #ffd166;
+    animation: flame 1s ease-in-out infinite alternate;
+  }
+
+  @keyframes flame {
+    to { transform: rotate(-45deg) scale(1.12); }
+  }
+
+  .party-faces {
+    display: inline-flex;
+    gap: 4px;
+    margin-left: 10px;
+    vertical-align: middle;
+  }
+
+  .party-popper {
+    width: 42px;
+    height: 42px;
+    display: inline-block;
+    filter: drop-shadow(0 3px 7px rgba(255, 180, 230, .25));
+    animation: popperBounce 1.6s ease-in-out infinite;
+  }
+
+  .party-popper:nth-child(2) { animation-delay: .15s; }
+  .party-popper:nth-child(3) { animation-delay: .3s; }
+
+  @keyframes popperBounce {
+    0%,100% { transform: translateY(0) rotate(-3deg); }
+    50% { transform: translateY(-5px) rotate(3deg); }
+  }
+
+  .inline-icon {
+    display: inline-flex;
+    width: 25px;
+    height: 25px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-left: 3px;
+    font-weight: 900;
+    vertical-align: -3px;
+  }
+
+  .muscle-icon { color:#ffd166; font-size: 20px; }
+  .rocket-icon { color:#f7c7e6; font-size: 22px; transform: rotate(-35deg); }
+  .heart { color:#ff6b9d; font-size: 20px; }
+
+  @keyframes giftPulse {
+    0%,100% { transform:scale(1) rotate(-3deg); }
+    50% { transform:scale(1.1) rotate(3deg); }
+  }
+
+  .open-title {
+    font-size: clamp(25px, 5vw, 42px);
+    margin-bottom: 30px;
+  }
+
+  .open-button {
+    border: 0;
+    cursor: pointer;
+    color: white;
+    font-size: 19px;
+    font-weight: 750;
+    padding: 17px 32px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #8b5cf6, #ec4899);
+    box-shadow: 0 12px 35px rgba(139,92,246,.45);
+    animation: buttonPulse 2s infinite;
+  }
+
+  .open-button:hover {
+    transform: translateY(-3px) scale(1.03);
+  }
+
+  @keyframes buttonPulse {
+    0%,100% { box-shadow:0 12px 35px rgba(139,92,246,.45); }
+    50% { box-shadow:0 12px 45px rgba(236,72,153,.55); }
+  }
+
+  .hidden {
+    opacity: 0;
+    transform: scale(.8);
+  }
+
+  /* Открытка */
+  .card {
+    display: none;
+    width: min(920px, 100%);
+    padding: 42px 48px 30px;
+    border-radius: 28px;
+    background: rgba(15, 12, 45, .38);
+    border: 1px solid rgba(255,255,255,.14);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 25px 70px rgba(0,0,0,.3);
+  }
+
+  .card.active {
+    display: block;
+    animation: cardAppear .9s ease forwards;
+  }
+
+  @keyframes cardAppear {
+    from {
+      opacity: 0;
+      transform: translateY(35px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Заголовок */
+  .card-title {
+    text-align: center;
+    font-size: clamp(32px, 6vw, 57px);
+    line-height: 1.12;
+    margin-bottom: 34px;
+    font-weight: 900;
+    background: linear-gradient(90deg, #ffd0e7, #fff, #d8c4ff, #ffd0e7);
+    background-size: 250%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: titleGradient 4s linear infinite;
+  }
+
+  @keyframes titleGradient {
+    from { background-position:0%; }
+    to { background-position:250%; }
+  }
+
+  /*
+    Вместо 🥳 используются маленькие SVG-фигурки.
+    Они отображаются одинаково в Chrome, Edge и Firefox,
+    даже если в Windows нет цветного emoji-шрифта.
+  */
+  .party-faces {
+    display: inline-block;
+    margin-left: 8px;
+    white-space: nowrap;
+    font-size: .68em;
+    letter-spacing: 3px;
+    vertical-align: middle;
+  }
+
+  /* Текст теперь идёт последовательно сверху вниз,
+     а не отдельными строками по центру */
+  .message {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    text-align: left;
+    font-size: clamp(17px, 2.2vw, 20px);
+    line-height: 1.65;
+  }
+
+  .message-line {
+    opacity: 0;
+    transform: translateY(22px);
+    text-indent: 1.6em;
+  }
+
+  .card.active .message-line {
+    animation: lineAppear .75s ease forwards;
+  }
+
+  .message-line:nth-child(1) { animation-delay:.45s; }
+  .message-line:nth-child(2) { animation-delay:1.0s; }
+  .message-line:nth-child(3) { animation-delay:1.55s; }
+  .message-line:nth-child(4) { animation-delay:2.1s; }
+  .message-line:nth-child(5) { animation-delay:2.65s; }
+
+  @keyframes lineAppear {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .signature {
+    max-width: 800px;
+    margin: 32px auto 0;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,.14);
+    text-align: right;
+    font-size: 17px;
+    color: rgba(255,255,255,.75);
+    opacity: 0;
+  }
+
+  .card.active .signature {
+    animation: signatureAppear .8s ease 3.3s forwards;
+  }
+
+  @keyframes signatureAppear {
+    to { opacity:1; }
+  }
+
+  .heart {
+    display: inline-block;
+    animation: heartBeat 1.2s infinite;
+  }
+
+  @keyframes heartBeat {
+    0%,100% { transform:scale(1); }
+    15% { transform:scale(1.25); }
+    30% { transform:scale(1); }
+  }
+
+  /* Конфетти */
+  #confetti {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 20;
+  }
+
+  @media (max-width: 650px) {
+    .container {
+      padding: 80px 12px 30px;
+    }
+
+    .card {
+      padding: 32px 20px 24px;
+      border-radius: 22px;
+    }
+
+    .card-title {
+      margin-bottom: 28px;
+    }
+
+    .party-faces {
+      gap: 1px;
+      margin-left: 5px;
+    }
+
+    .party-popper {
+      width: 30px;
+      height: 30px;
+    }
+
+    .message {
+      gap: 18px;
+      line-height: 1.55;
+    }
+
+    .signature {
+      text-align: center;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="glow glow-1"></div>
+<div class="glow glow-2"></div>
+<div class="glow glow-3"></div>
+<div class="glow glow-4"></div>
+
+<div class="garland">
+  <div class="garland-line"></div>
+  <div class="bulbs">
+    <span class="bulb"></span><span class="bulb"></span>
+    <span class="bulb"></span><span class="bulb"></span>
+    <span class="bulb"></span><span class="bulb"></span>
+    <span class="bulb"></span><span class="bulb"></span>
+    <span class="bulb"></span><span class="bulb"></span>
+  </div>
+</div>
+
+<canvas id="confetti"></canvas>
+
+<main class="container">
+
+  <section class="open-screen" id="openScreen">
+    <div class="gift" aria-label="Подарок">
+      <div class="cake-icon">
+        <span class="flame"></span>
+        <span class="candle candle-1"></span>
+        <span class="candle candle-2"></span>
+        <span class="candle candle-3"></span>
+        <span class="cake-top"></span>
+        <span class="cake-body"></span>
+      </div>
+    </div>
+    <h1 class="open-title">Для тебя есть кое-что особенное...</h1>
+    <button class="open-button" id="openButton">
+      Открыть открытку
+    </button>
+  </section>
+
+  <section class="card" id="card">
+
+    <h1 class="card-title">
+      Егор, с днём рождения!
+      <span class="party-faces" aria-label="Праздничный салют">
+        <svg class="party-popper" viewBox="0 0 100 100" aria-hidden="true">
+          <path d="M25 72 L39 38 L64 52 L48 84 Z" fill="#f7c7e6"/>
+          <path d="M39 38 L47 28 L72 42 L64 52 Z" fill="#f3a9d3"/>
+          <path d="M51 25 C43 18 43 11 49 8 C55 12 55 18 51 25Z" fill="#ffd166"/>
+          <path d="M68 27 C72 18 78 15 84 19 C81 25 75 28 68 27Z" fill="#4cc9f0"/>
+          <path d="M75 45 C85 42 91 45 92 52 C85 54 79 51 75 45Z" fill="#06d6a0"/>
+          <circle cx="38" cy="28" r="4" fill="#f72585"/>
+          <circle cx="78" cy="35" r="3.5" fill="#ffd166"/>
+          <circle cx="61" cy="17" r="3" fill="#c77dff"/>
+          <path d="M31 23 L23 15 M38 16 L36 6 M57 10 L60 2 M75 15 L82 7" stroke="#f7c7e6" stroke-width="3.5" stroke-linecap="round"/>
+        </svg>
+        <svg class="party-popper" viewBox="0 0 100 100" aria-hidden="true">
+          <path d="M25 72 L39 38 L64 52 L48 84 Z" fill="#f7c7e6"/>
+          <path d="M39 38 L47 28 L72 42 L64 52 Z" fill="#f3a9d3"/>
+          <path d="M51 25 C43 18 43 11 49 8 C55 12 55 18 51 25Z" fill="#ffd166"/>
+          <path d="M68 27 C72 18 78 15 84 19 C81 25 75 28 68 27Z" fill="#4cc9f0"/>
+          <path d="M75 45 C85 42 91 45 92 52 C85 54 79 51 75 45Z" fill="#06d6a0"/>
+          <circle cx="38" cy="28" r="4" fill="#f72585"/>
+          <circle cx="78" cy="35" r="3.5" fill="#ffd166"/>
+          <circle cx="61" cy="17" r="3" fill="#c77dff"/>
+          <path d="M31 23 L23 15 M38 16 L36 6 M57 10 L60 2 M75 15 L82 7" stroke="#f7c7e6" stroke-width="3.5" stroke-linecap="round"/>
+        </svg>
+        <svg class="party-popper" viewBox="0 0 100 100" aria-hidden="true">
+          <path d="M25 72 L39 38 L64 52 L48 84 Z" fill="#f7c7e6"/>
+          <path d="M39 38 L47 28 L72 42 L64 52 Z" fill="#f3a9d3"/>
+          <path d="M51 25 C43 18 43 11 49 8 C55 12 55 18 51 25Z" fill="#ffd166"/>
+          <path d="M68 27 C72 18 78 15 84 19 C81 25 75 28 68 27Z" fill="#4cc9f0"/>
+          <path d="M75 45 C85 42 91 45 92 52 C85 54 79 51 75 45Z" fill="#06d6a0"/>
+          <circle cx="38" cy="28" r="4" fill="#f72585"/>
+          <circle cx="78" cy="35" r="3.5" fill="#ffd166"/>
+          <circle cx="61" cy="17" r="3" fill="#c77dff"/>
+          <path d="M31 23 L23 15 M38 16 L36 6 M57 10 L60 2 M75 15 L82 7" stroke="#f7c7e6" stroke-width="3.5" stroke-linecap="round"/>
+        </svg>
+      </span>
+    </h1>
+
+    <div class="message">
+
+      <p class="message-line">
+        От всей души желаю тебе счастья, здоровья, крепкой любви
+        и всего самого наилучшего!
+      </p>
+
+      <p class="message-line">
+        Пусть рядом с тобой всегда будет любимая девушка, которая будет ценить, уважать и поддерживать тебя, верные друзья, которые никогда не бросят в трудную минуту, и родители, которые будут всегда гордиться тобой и с радостью рассказывать о твоих успехах.
+      </p>
+
+      <p class="message-line">
+        Мечтай, люби, стремись к звёздам — пусть всё задуманное
+        обязательно исполняется и радует тебя!
+      </p>
+
+      <p class="message-line">
+  Я очень рад, что ты мой хороший друг и классный одногруппник.
+  Будь счастливым и, самое главное, всегда здоровым как бык.
+  💪
+</p>
+
+      <p class="message-line">
+        Пусть этот год принесёт тебе море ярких моментов,
+        крутых возможностей и незабываемых приключений! <span class="inline-icon rocket-icon" aria-label="вперёд">➤</span>
+      </p>
+
+    </div>
+
+    <div class="signature">
+      От твоего брадка Дениса <span class="heart" aria-label="любовь">♥</span>
+    </div>
+
+  </section>
+</main>
+
+<script>
+const openButton = document.getElementById("openButton");
+const openScreen = document.getElementById("openScreen");
+const card = document.getElementById("card");
+const canvas = document.getElementById("confetti");
+const ctx = canvas.getContext("2d");
+
+let particles = [];
+let animationRunning = false;
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth * devicePixelRatio;
+  canvas.height = window.innerHeight * devicePixelRatio;
+  canvas.style.width = window.innerWidth + "px";
+  canvas.style.height = window.innerHeight + "px";
+
+  ctx.setTransform(
+    devicePixelRatio, 0, 0, devicePixelRatio, 0, 0
+  );
+}
+
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
+const colors = [
+  "#ff4d6d", "#ffd166", "#06d6a0",
+  "#4cc9f0", "#c77dff", "#f72585",
+  "#ffffff", "#fb7185", "#a78bfa"
+];
+
+class Confetti {
+  constructor() {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = Math.random() * 14 + 7;
+
+    this.x = window.innerWidth / 2;
+    this.y = window.innerHeight / 2;
+    this.vx = Math.cos(angle) * speed;
+    this.vy = Math.sin(angle) * speed - 5;
+    this.gravity = .25 + Math.random() * .12;
+    this.drag = .985;
+    this.width = Math.random() * 9 + 5;
+    this.height = Math.random() * 5 + 3;
+    this.rotation = Math.random() * Math.PI * 2;
+    this.rotationSpeed = (Math.random() - .5) * .35;
+    this.color = colors[Math.floor(Math.random() * colors.length)];
+    this.opacity = 1;
+  }
+
+  update() {
+    this.vx *= this.drag;
+    this.vy += this.gravity;
+    this.x += this.vx;
+    this.y += this.vy;
+    this.rotation += this.rotationSpeed;
+
+    if (this.y > window.innerHeight + 30) {
+      this.opacity -= .03;
+    }
+  }
+
+  draw() {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.rotation);
+    ctx.globalAlpha = Math.max(this.opacity, 0);
+    ctx.fillStyle = this.color;
+    ctx.fillRect(
+      -this.width / 2,
+      -this.height / 2,
+      this.width,
+      this.height
+    );
+    ctx.restore();
+  }
+}
+
+function createConfetti() {
+  particles = [];
+
+  for (let i = 0; i < 180; i++) {
+    particles.push(new Confetti());
+  }
+
+  animationRunning = true;
+  animateConfetti();
+}
+
+function animateConfetti() {
+  if (!animationRunning) return;
+
+  ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+  let active = 0;
+
+  particles.forEach(p => {
+    p.update();
+    p.draw();
+
+    if (p.opacity > 0) active++;
+  });
+
+  if (active > 0) {
+    requestAnimationFrame(animateConfetti);
+  } else {
+    animationRunning = false;
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+  }
+}
+
+openButton.addEventListener("click", () => {
+  openScreen.classList.add("hidden");
+  createConfetti();
+
+  setTimeout(() => {
+    openScreen.style.display = "none";
+    card.classList.add("active");
+  }, 450);
+});
+</script>
+
+</body>
+</html>
